@@ -1,13 +1,21 @@
 cmake_minimum_required(VERSION 3.10)
 project(OrderBookFeedSystem)
 
+cmake_policy(SET CMP0167 NEW)
+
 set(CMAKE_CXX_STANDARD 17)
 
-# === Include headers ===
-include_directories(include)
-include_directories(/opt/homebrew/include)
+# === Boost manually set for macOS/Homebrew ===
+set(Boost_INCLUDE_DIR /opt/homebrew/include)
+set(Boost_LIBRARY_DIR /opt/homebrew/lib)
 
-# === Main app executable ===
+find_package(Boost REQUIRED COMPONENTS system thread)
+
+include_directories(include)
+include_directories(${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIR})
+
+# === Executable ===
 add_executable(market_data_feed
     src/main.cpp
     src/market_data_parser.cpp
@@ -15,16 +23,16 @@ add_executable(market_data_feed
     src/network_thread.cpp
     src/processing_thread.cpp
     src/ticker_thread.cpp
+    src/websocket_server.cpp
 )
 
-# === Link libraries ===
+# === Link Boost and pthread ===
 target_link_libraries(market_data_feed
     ${Boost_LIBRARIES}
     pthread
 )
 
-# === Test executables ===
-
+# === Tests (optional) ===
 add_executable(test_market_data_parser
     tests/test_market_data_parser.cpp
     src/market_data_parser.cpp
