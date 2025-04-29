@@ -33,7 +33,7 @@ cd scripts
 python3 feed_simulator.py
 ```
 
-### Build and run the C++ real-time engine
+### Step 2: Build and run the C++ engine
 
 ```bash
 cd ..
