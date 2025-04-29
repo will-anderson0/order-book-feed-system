@@ -56,7 +56,6 @@ while True:
         conn.sendall((message + "\n").encode())
         print("Sent:", message)
 
-        time.sleep(random.uniform(0.1, 0.5))
 
     except (BrokenPipeError, ConnectionResetError):
         print("Client disconnected. Waiting for new connection...")
